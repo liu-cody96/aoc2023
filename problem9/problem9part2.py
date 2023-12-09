@@ -1,0 +1,40 @@
+# Specify the path to your text file
+file_path = 'problem9.txt'
+from collections import deque
+
+# Open the file in read mode
+with open(file_path, 'r') as file:
+    total = 0
+    # Read each line and process it
+    for line_number, line in enumerate(file, start=1):
+        # Do something with each line
+        # For example, print the line number and content
+        lst = line.strip().split(' ')
+        
+        num_zeroes = 0
+        lsts = [deque(lst)]
+        while num_zeroes != len(lst):
+            new_lst = deque()
+            num_zeroes = 0
+            for i in range(1, len(lst)):
+                diff = int(lst[i]) - int(lst[i-1])
+                if diff == 0:
+                    num_zeroes += 1
+                new_lst.append(diff)
+            lst = new_lst
+            lsts.append(lst)
+        
+        curr_lst = len(lsts)-1
+        while curr_lst > -1:
+            first_num = lsts[curr_lst][0]
+            if curr_lst > 0:
+                curr_diff = int(lsts[curr_lst-1][0]) - int(first_num)
+                lsts[curr_lst-1].appendleft(curr_diff)
+                if curr_lst-1 == 0:
+                    total += curr_diff
+            curr_lst -= 1
+
+
+    print(total)
+
+# Note: 'line.strip()' removes leading and trailing whitespaces from the line
